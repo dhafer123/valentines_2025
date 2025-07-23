@@ -300,26 +300,28 @@
 
     // Make "No" button escape on hover
     noBtn.addEventListener("mouseover", () => {
-        const wrapperRect = wrapper.getBoundingClientRect();
-        const noBtnRect = noBtn.getBoundingClientRect();
+    const btnGroup = noBtn.parentElement;
+    const btnGroupRect = btnGroup.getBoundingClientRect();
+    const noBtnRect = noBtn.getBoundingClientRect();
 
-        // Calculate max positions (subtract button width/height and add padding)
-        const maxX = wrapperRect.width - noBtnRect.width - 20; // 20px padding from edge
-        const maxY = wrapperRect.height - noBtnRect.height - 20; // 20px padding from edge
+    // Calculate max left/top so button stays inside btn-group
+    const maxLeft = btnGroup.offsetWidth - noBtn.offsetWidth;
+    const maxTop = btnGroup.offsetHeight - noBtn.offsetHeight;
 
-        // Generate random positions within bounds
-        const randomX = Math.max(20, Math.floor(Math.random() * maxX)); // min 20px from edge
-        const randomY = Math.max(20, Math.floor(Math.random() * maxY)); // min 20px from edge
+    // Generate random position within bounds
+    const newLeft = Math.random() * maxLeft;
+    const newTop = Math.random() * maxTop;
 
-        noBtn.style.left = randomX + "px";
-        noBtn.style.top = randomY + "px";
-        
-        // Add a little shake effect to the button
-        noBtn.style.animation = "shake 0.5s ease-in-out";
-        setTimeout(() => {
-            noBtn.style.animation = "";
-        }, 500);
-    });
+    noBtn.style.position = "absolute";
+    noBtn.style.left = `${newLeft}px`;
+    noBtn.style.top = `${newTop}px`;
+
+    // Add shake effect
+    noBtn.style.animation = "shake 0.5s ease-in-out";
+    setTimeout(() => {
+        noBtn.style.animation = "";
+    }, 500);
+});
 
     // Function to create celebration hearts
     function createCelebrationHearts() {
